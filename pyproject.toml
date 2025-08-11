@@ -1,0 +1,15 @@
+[project]
+name = "python-deepcoin"
+version = "0.1.0"
+description = "Unofficial Python wrapper for the DeepCoin API (REST + WebSocket)"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [
+    { name = "parker1019", email = "parker178912@gmail.com" }
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/parker1019/python-deepcoin"
+Documentation = "https://www.deepcoin.com/docs/authentication"
