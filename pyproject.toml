@@ -8,7 +8,10 @@ license = { text = "MIT" }
 authors = [
     { name = "parker1019", email = "parker178912@gmail.com" }
 ]
-dependencies = []
+dependencies = [
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.4",
+]
 
 [project.urls]
 Homepage = "https://github.com/parker1019/python-deepcoin"
