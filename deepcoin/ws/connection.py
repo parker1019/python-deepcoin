@@ -143,4 +143,5 @@ class WebSocketConnection:
             raise DeepcoinWebSocketConnectionError("WebSocket is not connected.")
 
     def is_alive(self) -> bool:
-        return self.ws and self.ws.sock and self.ws.sock.connected
+        sock = getattr(self.ws, 'sock', None) if self.ws else None
+        return sock is not None and getattr(sock, 'connected', False)
