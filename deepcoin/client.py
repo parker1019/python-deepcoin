@@ -43,7 +43,10 @@ class Client(BaseClient):
                 if key == "headers":
                     headers.update(kwargs["data"][key])
                     del kwargs["data"][key]
-
+        if "data" in kwargs and isinstance(kwargs["data"], dict):
+            if "headers" in kwargs["data"]:
+                headers.update(kwargs["data"]["headers"])
+                del kwargs["data"]["headers"]
         kwargs = self._get_request_kwargs(method, signed, force_params, **kwargs)
 
         data = kwargs.pop("data", None)
