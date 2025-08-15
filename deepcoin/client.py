@@ -336,7 +336,7 @@ class Client(BaseClient):
         if px is not None:
             payload["px"] = px
         if reduce_only is not None:
-            payload["reduceOnly"] = bool(reduce_only)
+            payload["reduceOnly"] = reduce_only
         if tgt_ccy is not None:
             payload["tgtCcy"] = tgt_ccy
         if tp_trigger_px is not None:
