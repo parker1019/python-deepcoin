@@ -9,8 +9,10 @@ authors = [
     { name = "parker1019", email = "parker178912@gmail.com" }
 ]
 dependencies = [
+    "colorlog>=6.9.0",
     "python-dotenv>=1.1.1",
     "requests>=2.32.4",
+    "websocket-client>=1.8.0",
 ]
 
 [project.urls]
