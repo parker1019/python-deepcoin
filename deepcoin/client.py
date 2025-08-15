@@ -38,11 +38,6 @@ class Client(BaseClient):
         if method.upper() in ["POST", "PUT", "DELETE"]:
             headers.update({"Content-Type": "application/json"})
 
-        if "data" in kwargs:
-            for key in list(kwargs["data"].keys()):
-                if key == "headers":
-                    headers.update(kwargs["data"][key])
-                    del kwargs["data"][key]
         if "data" in kwargs and isinstance(kwargs["data"], dict):
             if "headers" in kwargs["data"]:
                 headers.update(kwargs["data"]["headers"])
