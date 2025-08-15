@@ -743,3 +743,37 @@ class Client(BaseClient):
             payload["slTriggerPx"] = float(sl_trigger_px)
 
         return self._post("/deepcoin/trade/replace-order-sltp", signed=True, data=payload)
+
+    # === Listen Key APIs (Only for private WS) ===
+
+    def get_listenkey(self) -> str:
+        """
+        GET /deepcoin/listenkey/acquire
+        Get a new listenKey for private WebSocket connection.
+
+        Returns:
+        - listenKey (str): WebSocket authentication key
+        """
+        resp = self._get("/deepcoin/listenkey/acquire", signed=True)
+        return resp["data"]["listenkey"]
+    
+    def extend_listenkey(self, listenkey: str) -> str:
+        """
+        GET /deepcoin/listenkey/extend
+        Extend listenKey expiration time (sliding window).
+
+        Required:
+        - listenkey (str): The key to extend
+
+        Returns:
+        - listenKey (str): Renewed key (same as input)
+        """
+        if not listenkey:
+            raise ValueError("listenkey is required")
+
+        resp = self._get(
+            "/deepcoin/listenkey/extend",
+            signed=True,
+            params={"listenkey": listenkey}
+        )
+        return resp["data"]["listenkey"]

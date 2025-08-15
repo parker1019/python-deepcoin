@@ -1,23 +1,26 @@
 from __future__ import annotations
 
 import logging
+import threading
 from typing import Callable, Optional
 
 from .connection import WebSocketConnection
 from .dispatcher import MessageDispatcher
 from . import topics
 from .enums import TopicID, PUBLIC_FUTURES_WS_ENDPOINT, PRIVATE_WS_ENDPOINT
+from ..client import Client
 
 logger = logging.getLogger(__name__)
 
 
 class DeepcoinWebsocketManager:
     """
-    WebSocket manager for Deepcoin public topics.
+    WebSocket manager for Deepcoin public and private topics.
     Handles connection, subscription, and callback dispatch.
+    Automatically handles listenkey for private connection.
     """
 
-    def __init__(self, endpoint: str = PUBLIC_FUTURES_WS_ENDPOINT):
+    def __init__(self, endpoint: str = PUBLIC_FUTURES_WS_ENDPOINT, client: Optional[Client] = None):
         self._endpoint = endpoint
         self._dispatcher = MessageDispatcher()
         self._connection = WebSocketConnection(
@@ -28,6 +31,11 @@ class DeepcoinWebsocketManager:
             on_error=self._on_error,
         )
         self._local_no_counter = 1000  # for generating unique local_no
+        self._is_private = self._endpoint == PRIVATE_WS_ENDPOINT
+        self._client = client
+        self._listenkey: Optional[str] = None
+        self._extend_thread: Optional[threading.Thread] = None
+        self._stop_event = threading.Event()
 
     # -------------------------
     # WebSocket lifecycle
@@ -36,11 +44,24 @@ class DeepcoinWebsocketManager:
     def start(self):
         """Start WebSocket background thread."""
         logger.info("Starting Deepcoin WS manager.")
+
+        if self._is_private:
+            if self._client is None:
+                raise RuntimeError("Client instance is required for private WebSocket connection.")
+
+            self._listenkey = self._client.get_listenkey()
+            self._connection.url = f"{self._endpoint}?listenKey={self._listenkey}"
+            logger.info("Using listenKey: %s", self._listenkey)
+
+            self._extend_thread = threading.Thread(target=self._keep_extending_listenkey, daemon=True)
+            self._extend_thread.start()
+
         self._connection.start()
 
     def stop(self):
         """Stop WebSocket connection and thread."""
         logger.info("Stopping Deepcoin WS manager.")
+        self._stop_event.set()
         self._connection.stop()
 
     def is_alive(self) -> bool:
@@ -116,3 +137,14 @@ class DeepcoinWebsocketManager:
         """Generate unique LocalNo for each subscription."""
         self._local_no_counter += 1
         return self._local_no_counter
+
+    def _keep_extending_listenkey(self):
+        """Thread that extends listenkey every 30 minutes."""
+        logger.info("Start auto-renew listenKey loop.")
+        while not self._stop_event.wait(timeout=30 * 60):
+            try:
+                if self._listenkey:
+                    self._client.extend_listenkey(self._listenkey)
+                    logger.info("Extended listenKey: %s", self._listenkey)
+            except Exception as e:
+                logger.warning("Failed to extend listenKey: %s", e)
