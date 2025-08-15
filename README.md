@@ -33,4 +33,38 @@ This package provides an easy-to-use, Pythonic interface for interacting with De
   - `replace_order_sltp()` - Modify Take Profit and Stop Loss for Open Limit Orders
 
 ## Quick Start
-Coming soon
+
+### Installation
+
+Install via pip:
+
+```bash
+pip install python-deepcoin
+```
+
+### Authentication
+
+Most endpoints require authentication. To begin, initialize the client with your API key and secret:
+
+```python
+from deepcoin import DeepcoinClient
+
+client = DeepcoinClient(
+    api_key='your_api_key',
+    api_secret='your_api_secret',
+    passphrase='your_api_passphrase'
+)
+```
+
+### Example Usage
+
+Get Account Balance
+
+```python
+balance = client.get_balances()
+print(balance)
+```
+
+More Examples
+
+You can find more usage examples in the `examples/` folder.
