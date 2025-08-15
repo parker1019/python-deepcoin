@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0] - 2025-08-15
+
+### Added
+- **WebSocket Client**
+  - Introduced unified WebSocket manager: `DeepcoinWebsocketManager`.
+  - Supports both **public** and **private** WebSocket endpoints.
+  - Auto-renewal of `listenKey` every 30 minutes via background thread.
+  - Dispatcher-based callback system (register/unregister per topic).
+  - Demo examples for public and private WebSocket usage (`examples/ws_*.py`).
+
+### Infra
+- WebSocket enums and topic definitions (`WSAction`, `TopicID`, etc).
+- `WebSocketConnection` base handler using `websocket-client`.
+- `MessageDispatcher` for internal routing of action-based messages.
+- Logging structure updated for `deepcoin.ws` namespace.
+
 ## [0.1.0] - 2025-08-15
 
 ### Added

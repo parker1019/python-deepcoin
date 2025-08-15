@@ -1,4 +1,4 @@
-# Welcome to python-deepcoin v0.1.0
+# Welcome to python-deepcoin v0.2.0
 
 This is an unofficial Python wrapper for the [DeepCoin API](https://www.deepcoin.com/docs/authentication)
 This package provides an easy-to-use, Pythonic interface for interacting with DeepCoin's REST and WebSocket APIs, supporting both spot and derivatives trading.
@@ -31,6 +31,10 @@ This package provides an easy-to-use, Pythonic interface for interacting with De
   - `get_current_funding_rate()` - Get Current Funding Rate 
   - `get_funding_rate_history()` - Get Funding Rate History
   - `replace_order_sltp()` - Modify Take Profit and Stop Loss for Open Limit Orders
+
+- **WebSocket**
+  - Public
+  - Private
 
 ## Quick Start
 
