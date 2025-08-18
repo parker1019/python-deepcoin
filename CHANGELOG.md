@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.1] - 2025-08-18
+
+### Fixed
+- Fixed the error for extending the private WebSocket `listenKey`. The request was incorrectly sent as a `GET` with query parameters; now correctly uses `GET` with body.
+
 ## [0.2.0] - 2025-08-15
 
 ### Added
