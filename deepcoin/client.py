@@ -774,6 +774,6 @@ class Client(BaseClient):
         resp = self._get(
             "/deepcoin/listenkey/extend",
             signed=True,
-            params={"listenkey": listenkey}
+            data={"listenkey": listenkey}
         )
         return resp["data"]["listenkey"]

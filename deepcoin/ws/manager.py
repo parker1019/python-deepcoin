@@ -140,11 +140,11 @@ class DeepcoinWebsocketManager:
 
     def _keep_extending_listenkey(self):
         """Thread that extends listenkey every 30 minutes."""
-        logger.info("Start auto-renew listenKey loop.")
+        logger.info("Start auto-renew listenkey loop.")
         while not self._stop_event.wait(timeout=30 * 60):
             try:
                 if self._listenkey:
                     self._client.extend_listenkey(self._listenkey)
-                    logger.info("Extended listenKey: %s", self._listenkey)
+                    logger.info("Extended listenkey: %s", self._listenkey)
             except Exception as e:
-                logger.warning("Failed to extend listenKey: %s", e)
+                logger.warning("Failed to extend listenkey: %s", e)
